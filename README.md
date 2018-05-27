@@ -1,4 +1,3 @@
 # tictac
-A tic tac toe android app that allows users to change the size of the board. 
-still need a way to change the size of the board....
+successfuly was able to change size of grid programatically, it all works! yeet. I really need to get a life and stop working on this
 
