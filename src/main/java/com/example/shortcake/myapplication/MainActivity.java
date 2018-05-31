@@ -4,8 +4,11 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,10 +19,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MediaPlayer c2;
     MediaPlayer r;
 
-    private final int size = 3; // lets have the default size be 3, and then user can change via settings
+    private final int size = 4; //can change in settings
     private Button[][] buttons = new Button[size][size];
 
-    private boolean player1Turn = true;
+    private boolean player1Turn = true; //can change in settings
 
     private int roundCount;
 
@@ -29,12 +32,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
 
-    private boolean soundOn = true;
+    private boolean computerOn = false;
+
+    private boolean soundOn = true; //can change in settings
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         c1 = MediaPlayer.create(context, R.raw.click1);
@@ -44,16 +50,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
 
-        for (int r = 0; r < size; r++)
+        LinearLayout layout = (LinearLayout)findViewById(R.id.wrapper);
+
+        for(int i = 0; i < size; i++)
         {
-            for (int c = 0; c < size; c++) //this is where the magic happens
+            LinearLayout row = new LinearLayout(this);
+            row.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
+
+
+            for(int j = 0; j < size; j++)
             {
-                String buttonID = "button_" + r + c; //this will be gone
-                int resID = getResources().getIdentifier(buttonID, "id", getPackageName()); // this will be gone
-                buttons[r][c] = findViewById(resID); //we can add the buttons programmatically rather than finding existing ones
-                buttons[r][c].setOnClickListener(this);
+                Button btn = new Button(this);
+                btn.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+               // btn.setWidth(0);
+               // btn.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
+                String id = i + "" + j;
+                btn.setId(Integer.parseInt(id));
+                buttons[i][j] = btn;
+                buttons[i][j].setOnClickListener(this);
+                row.addView(btn);
+
             }
+            layout.addView(row);
         }
+
 
         Button buttonReset = findViewById(R.id.button_reset);
         buttonReset.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (!((Button) v).getText().toString().equals("")) {
             return;
+
         }
 
         if (player1Turn) {
@@ -148,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             player1Turn = !player1Turn;
         }
+
 
     }
 
