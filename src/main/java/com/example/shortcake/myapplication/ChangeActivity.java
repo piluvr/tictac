@@ -15,22 +15,18 @@ public class ChangeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_change);
-        SharedPreferences.Editor editor = MainActivity.sharedpreferences.edit();
         Switch soundSwitch = findViewById(R.id.switch2);
         Switch turnSwitch =  findViewById(R.id.switch1);
         Switch computerSwitch =  findViewById(R.id.switch3);
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = findViewById(R.id.spinner);
         spinner.setSelection(0);
         String text = spinner.getSelectedItem().toString();
         text = text.substring(0,1);
-        prefs.edit().putBoolean("locked", true).commit();
-        MainActivity.soundOn = soundSwitch.isChecked();
-        MainActivity.computerOn = computerSwitch.isChecked();
-        MainActivity.size = Integer.parseInt(text);
+        MainActivity.setSound(soundSwitch.isChecked());
+        MainActivity.setComputer(computerSwitch.isChecked());
+        MainActivity.setSize(Integer.parseInt(text));
+        MainActivity.setTurn(turnSwitch.isChecked());
 
     }
 
 }
-
-
-
