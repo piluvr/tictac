@@ -1,5 +1,5 @@
-package com.example.cameronmccawley.tic_tac_toe;
 
+package schmidt.mc.tic_tac_toe;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -34,19 +34,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private int player1Points;
     private int player2Points;
-
-    private Button computer;
-
-    private TextView textViewPlayer1;
-    private TextView textViewPlayer2;
     public static SharedPreferences sharedpreferences;
     public static final String sizeString = "sizeKey";
     public static final String  turnString= "turnKey";
     public static final String soundString = "soundKey";
     public static final String CPUString = "CPUKey";
+
+
+    private TextView textViewPlayer1;
+    private TextView textViewPlayer2;
+
     public static boolean computerOn = false;
 
     public static boolean soundOn = true; //can change in settings
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 Button btn = new Button(this);
                 btn.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+                // btn.setWidth(0);
+                // btn.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
                 btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
                 String id = i + "" + j;
                 btn.setId(Integer.parseInt(id));
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+
         Button buttonSettings = findViewById(R.id.button_settings);
         buttonSettings.setOnClickListener((new View.OnClickListener() {
 
@@ -126,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }));
 
     }
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -148,27 +152,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         c1 = MediaPlayer.create(context, R.raw.click1);
                     }
                     c1.start();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        else if(!player1Turn && computerOn)
-        {
-            ((Button) v).setText("O");
-            if(soundOn)
-            {
-                try
-                {
-                    if (c2.isPlaying())
-                    {
-                        c2.stop();
-                        c2.release();
-                        c2 = MediaPlayer.create(context, R.raw.click2);
-                    }
-                    c2.start();
                 }
                 catch (Exception e)
                 {
@@ -216,11 +199,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
         {
             player1Turn = !player1Turn;
-        }
-
-        if(!player1Turn && computerOn)
-        {
-            computer();
         }
 
 
@@ -340,32 +318,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         roundCount = 0;
         player1Turn = true;
-    }
-
-    public boolean validMove(View v)
-    {
-        if (!((Button) v).getText().toString().equals("")) {
-            return false;
-            }
-        else
-        {
-            return true;
-        }
-    }
-
-    public void computer()
-    {
-        while(true)
-        {
-            int i = (int)(Math.random() * size);
-            int j = (int)(Math.random() * size);
-            String id = i + "" + j;
-            computer = findViewById(Integer.parseInt(id));
-            if(validMove(computer))
-            {
-                break;
-            }
-        }
-        computer.performClick();
     }
 }
