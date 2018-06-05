@@ -1,6 +1,7 @@
-package com.example.shortcake.myapplication;
+package com.example.cameronmccawley.tic_tac_toe;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -19,22 +22,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MediaPlayer c2;
     MediaPlayer r;
 
-    private final int size = 4; //can change in settings
+    public MainActivity activity;
+    public static int size = 4; //can change in settings
+    public final int resultCode = 1;
     private Button[][] buttons = new Button[size][size];
 
-    private boolean player1Turn = true; //can change in settings
+    public static boolean player1Turn = true; //can change in settings
 
     private int roundCount;
+    public static final String myPREFERENCES = "MyPrefs" ;
 
     private int player1Points;
     private int player2Points;
 
+    private Button computer;
+
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
+    public static SharedPreferences sharedpreferences;
+    public static final String sizeString = "sizeKey";
+    public static final String  turnString= "turnKey";
+    public static final String soundString = "soundKey";
+    public static final String CPUString = "CPUKey";
+    public static boolean computerOn = false;
 
-    private boolean computerOn = false;
-
-    private boolean soundOn = true; //can change in settings
+    public static boolean soundOn = true; //can change in settings
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
+        sharedpreferences = getSharedPreferences(myPREFERENCES, Context.MODE_PRIVATE);
         c1 = MediaPlayer.create(context, R.raw.click1);
         c2 = MediaPlayer.create(context, R.raw.click2);
         r = MediaPlayer.create(context, R.raw.puff);
@@ -62,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 Button btn = new Button(this);
                 btn.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-               // btn.setWidth(0);
-               // btn.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
                 btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
                 String id = i + "" + j;
                 btn.setId(Integer.parseInt(id));
@@ -100,6 +110,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        Button buttonSettings = findViewById(R.id.button_settings);
+        buttonSettings.setOnClickListener((new View.OnClickListener() {
+
+            Intent intent = new Intent(MainActivity.this, ChangeActivity.class);
+            @Override
+            public void onClick(View v) {
+                {
+
+                    startActivityForResult(intent, resultCode);
+                }
+
+
+            }
+        }));
+
+    }
     }
 
     @Override
@@ -122,6 +148,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         c1 = MediaPlayer.create(context, R.raw.click1);
                     }
                     c1.start();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if(!player1Turn && computerOn)
+        {
+            ((Button) v).setText("O");
+            if(soundOn)
+            {
+                try
+                {
+                    if (c2.isPlaying())
+                    {
+                        c2.stop();
+                        c2.release();
+                        c2 = MediaPlayer.create(context, R.raw.click2);
+                    }
+                    c2.start();
                 }
                 catch (Exception e)
                 {
@@ -169,6 +216,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
         {
             player1Turn = !player1Turn;
+        }
+
+        if(!player1Turn && computerOn)
+        {
+            computer();
         }
 
 
@@ -231,18 +283,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         for(int r = 0; r < size; r++) //diagonal check 2 works
+        {
+            if((field[r][r].equals("")) || (!(field[0][0].equals(field[r][r]))))
             {
-                if((field[r][r].equals("")) || (!(field[0][0].equals(field[r][r]))))
-                {
-                    break;
-                }
-
-                if(r == size - 1)
-                {
-                    return true;
-                }
-
+                break;
             }
+
+            if(r == size - 1)
+            {
+                return true;
+            }
+
+        }
 
         return false;
 
@@ -288,5 +340,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         roundCount = 0;
         player1Turn = true;
+    }
+
+    public boolean validMove(View v)
+    {
+        if (!((Button) v).getText().toString().equals("")) {
+            return false;
+            }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void computer()
+    {
+        while(true)
+        {
+            int i = (int)(Math.random() * size);
+            int j = (int)(Math.random() * size);
+            String id = i + "" + j;
+            computer = findViewById(Integer.parseInt(id));
+            if(validMove(computer))
+            {
+                break;
+            }
+        }
+        computer.performClick();
     }
 }
