@@ -1,5 +1,3 @@
-
-package schmidt.mc.tic_tac_toe;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -22,24 +20,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MediaPlayer c2;
     MediaPlayer r;
 
-    public MainActivity activity;
-    public static int size = 4; //can change in settings
-    public final int resultCode = 1;
-    private Button[][] buttons = new Button[size][size];
 
+    public static int size = 4; //can change in settings
+    private Button[][] buttons = new Button[size][size];
     public static boolean player1Turn = true; //can change in settings
 
     private int roundCount;
-    public static final String myPREFERENCES = "MyPrefs" ;
 
     private int player1Points;
     private int player2Points;
-    public static SharedPreferences sharedpreferences;
-    public static final String sizeString = "sizeKey";
-    public static final String  turnString= "turnKey";
-    public static final String soundString = "soundKey";
-    public static final String CPUString = "CPUKey";
-
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
@@ -55,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        sharedpreferences = getSharedPreferences(myPREFERENCES, Context.MODE_PRIVATE);
+
         c1 = MediaPlayer.create(context, R.raw.click1);
         c2 = MediaPlayer.create(context, R.raw.click2);
         r = MediaPlayer.create(context, R.raw.puff);
@@ -122,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 {
 
-                    startActivityForResult(intent, resultCode);
+                    startActivity(intent);
                 }
 
 
@@ -298,6 +287,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
         resetBoard();
+    }
+    public static void setSize(int input){
+        MainActivity.size = input;
+    }
+    public static void setComputer(boolean input) {
+    MainActivity.computerOn =  input;
+    }
+    public static void setSound(boolean input){
+        MainActivity.soundOn= input;
+    }
+    public static void setTurn(boolean input){
+        MainActivity.player1Turn= input;
     }
 
     public void updatePointsText()
