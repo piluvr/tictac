@@ -1,4 +1,4 @@
-package schmidt.mc.tic_tac_toe;
+package com.example.cameronmccawley.tic_tac_toe;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
