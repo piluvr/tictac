@@ -1,5 +1,5 @@
-package com.example.cameronmccawley.tic_tac_toe;
 
+package schmidt.mc.tic_tac_toe;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.widget.EditText;
 
+import static schmidt.mc.tic_tac_toe.ChangeActivity.newSize;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Context context = this;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public MainActivity activity;
     public static int size = 4; //can change in settings
+    public static int originalsize = size;
     public final int resultCode = 1;
     private Button[][] buttons = new Button[size][size];
 
@@ -38,10 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
-    public static final String sizeString = "sizeKey";
-    public static final String  turnString= "turnKey";
-    public static final String soundString = "soundKey";
-    public static final String CPUString = "CPUKey";
+
     public static boolean computerOn = false;
 
     public static boolean soundOn = true; //can change in settings
@@ -115,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 {
 
-                    startActivityForResult(intent, resultCode);
+                    startActivity(intent);
+                    finish();
                 }
 
 
@@ -342,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         if (!((Button) v).getText().toString().equals("")) {
             return false;
-            }
+        }
         else
         {
             return true;
