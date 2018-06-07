@@ -1,3 +1,5 @@
 # tictac
-successfuly was able to change size of grid programatically, it all works! yeet. I really need to get a life and stop working on this
-
+MainActivity-
+android.media.AudioManager audioManager = (android.media.AudioManager) getSystemService(Context.AUDIO_SERVICE); audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, 20, 0);
+AndroidManifest-
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
